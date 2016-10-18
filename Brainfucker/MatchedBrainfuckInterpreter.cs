@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace Brainfucker
 {
-    public class CompiledBrainfuckInterpreter : BrainfuckRunner
+    public class MatchedBrainfuckInterpreter : BrainfuckRunner
     {
         public const int N_CELLS = 30000;
-        public const int STACK_SIZE = 1024;
 
         private Stack<int> _stack = new Stack<int>();
 
-        private const byte INSTRUCTION_INCREMENT_NONE = 0;
+        private const byte INSTRUCTION_NONE = 0;
         private const byte INSTRUCTION_INCREMENT_DATA_POINTER = 1;
         private const byte INSTRUCTION_DECREMENT_DATA_POINTER = 2;
         private const byte INSTRUCTION_INCREMENT_DATA = 3;
@@ -26,11 +25,13 @@ namespace Brainfucker
 
         public override int Run(string brainfuck)
         {
-            ExecuteBrainfuck(CompileBrainfuck(brainfuck));
+            string shortBrainfuck = string.Join("", brainfuck.Where(c => c == '+' || c == '-' || c == '<' || c == '>' || c == '[' || c == ']' || c == '.' || c == ','));
+
+            ExecuteBrainfuck(MatchBrainfuck(shortBrainfuck));
             return 0;
         }
 
-        private int[] CompileBrainfuck(string brainfuck)
+        private int[] MatchBrainfuck(string brainfuck)
         {
             int programLength = brainfuck.Length;
             int[] instructions = new int[programLength * 2];
@@ -102,7 +103,7 @@ namespace Brainfucker
                             cells[dataPointer]--;
                             break;
                         case INSTRUCTION_OUTPUT_BYTE:
-                            Console.Write((char)cells[dataPointer]);
+                            OutputBuffer.WriteByte(cells[dataPointer]);
                             break;
                         case INSTRUCTION_INPUT_BYTE:
                             cells[dataPointer] = (byte)Console.Read();
@@ -110,17 +111,13 @@ namespace Brainfucker
                         case INSTRUCTION_JUMP_FORWARD:
                             if (cells[dataPointer] == 0)
                             {
-
                                 programCounter = instructions[2 * programCounter + 1];
-
                             }
                             break;
                         case INSTRUCTION_JUMP_BACKWARD:
                             if (cells[dataPointer] != 0)
                             {
-
                                 programCounter = instructions[2 * programCounter + 1];
-
                             }
                             break;
                     }

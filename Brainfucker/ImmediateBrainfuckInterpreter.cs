@@ -12,7 +12,9 @@ namespace Brainfucker
 
         public override int Run(string brainfuck)
         {
-            ExecuteBrainfuck(brainfuck);
+            string shortBrainfuck = string.Join("", brainfuck.Where(c => c == '+' || c == '-' || c == '<' || c == '>' || c == '[' || c == ']' || c == '.' || c == ','));
+
+            ExecuteBrainfuck(shortBrainfuck);
             return 0;
         }
 
@@ -43,7 +45,7 @@ namespace Brainfucker
                             cells[cellPointer]--;
                             break;
                         case '.':
-                            Console.Write((char)cells[cellPointer]);
+                            OutputBuffer.WriteByte(cells[cellPointer]);
                             break;
                         case ',':
                             cells[cellPointer] = (byte)Console.Read();

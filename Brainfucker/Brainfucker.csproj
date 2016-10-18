@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrainfuckRunner.cs" />
-    <Compile Include="CompiledBrainfuckInterpreter.cs" />
+    <Compile Include="CompressedBrainfuckInterpreter.cs" />
+    <Compile Include="MatchedBrainfuckInterpreter.cs" />
+    <Compile Include="OutputBuffer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ImmediateBrainfuckInterpreter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
